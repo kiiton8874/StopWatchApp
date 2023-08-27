@@ -5,17 +5,29 @@ import Constants from "expo-constants";
 import Result from "./Result";
 import Control from "./Control";
 import { displayTime } from "./util";
-// import MyHeader from "./Header";
+import MyHeader from "./Header";
 
 export default function StopWatch() {
   const [time, setTime] = useState(0);
   const [isRunning, setRunning] = useState(false);
+  const [lapTime, setLapTime] = useState(0);
   const [results, setResults] = useState([]);
   const timer = useRef(null);
 
   const handleLeftButtonPress = useCallback(() => {
     if (isRunning) {
+
+      let a = null
+      if(results[0] === undefined){
+        a = 0
+      } else {
+        a = results[0]
+      }
+      b = time - a
+      setLapTime(b);
       setResults((previousResults) => [time, ...previousResults]);
+      
+    
     } else {
       setResults([]);
       setTime(0);
@@ -29,6 +41,7 @@ export default function StopWatch() {
       }, 10);
 
       timer.current = interval;
+      
     } else {
       clearInterval(timer.current);
     }
@@ -38,14 +51,14 @@ export default function StopWatch() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <MyHeader />
-      <StatusBar style="light" /> */}
+      <MyHeader />
+      <StatusBar style="light" />
 
       <View style={styles.display}>
         <Text style={styles.displaySplitLap}>SPLIT</Text>
         <Text style={styles.displayText}>{displayTime(time)}</Text>
         <Text style={styles.displaySplitLap}>LAP</Text>
-        <Text style={styles.displaySplitLap}>00:00:00</Text>
+        <Text style={styles.displaySplitLap}>{displayTime(lapTime)}</Text>
       </View>
 
       <View style={styles.control}>

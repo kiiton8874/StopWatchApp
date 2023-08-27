@@ -1,19 +1,40 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, ScrollView, View } from "react-native";
 import { displayTime } from "./util";
 
 // print the lap time
 function Result({ results }) {
+
+  const lapTime = () => {
+    let a = null
+    if(results[0] === undefined) {
+      a = 0
+    } else {
+      a = results[0]
+    };
+
+    let b = null
+    if(results[1] === undefined) {
+      b = 0
+    } else {
+      b = results[1]
+    };
+
+    const c = a - b
+    return c;
+  }
+    
+   
+
   return (
     <ScrollView>
       <View style={styles.resultItem} />
-
       {results.map((item,index) => (
         <View key={index} style={styles.resultItem}>
           <Text style={styles.resultItemText}>
             Lap {results.length - index}
           </Text>
-          <Text style={styles.resultItemText}>{displayTime(item)}</Text>
+          <Text style={styles.resultItemText}>{displayTime(lapTime)}</Text>
         </View>
       ))}
     </ScrollView>
@@ -33,4 +54,4 @@ const styles = StyleSheet.create({
   resultItemText: { color: "#fff" },
 });
 
-export default React.memo(Result);
+export default Result;
